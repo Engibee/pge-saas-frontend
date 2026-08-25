@@ -1,0 +1,22 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    // Desligado porque usamos TS `enum` (ex.: StatusProjeto, PapelUsuario) para
+    // espelhar os enums do backend em C# — mais legível/idiomático que union types
+    // aqui. O Vite/esbuild compila TypeScript de verdade (não faz apenas
+    // "type-stripping"), então enums funcionam normalmente no bundle final.
+    "erasableSyntaxOnly": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+}

@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+
+/*
+ * Tailwind v4 configura o tema diretamente via CSS, com a diretiva @theme,
+ * em vez de um tailwind.config.js separado. Isso gera classes utilitárias
+ * (ex.: bg-brand-600, text-brand-600) a partir dos tokens abaixo.
+ *
+ * Paleta pensada para um ERP: azul como cor primária (confiança, profissionalismo)
+ * e verde do WhatsApp reservado para os componentes relacionados a essa integração.
+ */
+@theme {
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #d9e6ff;
+  --color-brand-200: #bcd2ff;
+  --color-brand-300: #8fb5ff;
+  --color-brand-400: #5b8fff;
+  --color-brand-500: #3568f5;
+  --color-brand-600: #2f6fed;
+  --color-brand-700: #2451c2;
+  --color-brand-800: #21449b;
+  --color-brand-900: #213c7b;
+
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #128c7e;
+
+  --color-surface: #f5f7fa;
+  --color-surface-dark: #0f172a;
+}
+
+/* Reset leve + base tipográfica do app */
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-surface text-slate-900;
+  }
+}
+
+/* Componentes utilitários reutilizados nas telas — evita repetir classes longas */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-brand-600 px-4 py-2.5
+      text-sm font-medium text-white shadow-sm transition-colors
+      hover:bg-brand-700 focus-visible:outline focus-visible:outline-2
+      focus-visible:outline-offset-2 focus-visible:outline-brand-600
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-slate-300
+      bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm
+      transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .input-field {
+    @apply block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm
+      shadow-sm transition-colors placeholder:text-slate-400
+      focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20;
+  }
+
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+  }
+
+  .label-field {
+    @apply mb-1.5 block text-sm font-medium text-slate-700;
+  }
+}
