@@ -32,7 +32,8 @@ export interface UsuarioAutenticado {
   tenantId: string
   nomeCompleto: string
   email: string
-  papel: PapelUsuario
+  /** O backend serializa o enum PapelUsuario como string (ex.: "AdministradorTenant"), não como número. */
+  papel: string
 }
 
 /** Paginação padrão usada em listagens da API (a definir formato exato junto ao backend). */

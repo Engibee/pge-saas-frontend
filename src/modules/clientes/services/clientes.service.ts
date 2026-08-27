@@ -1,15 +1,14 @@
 import { apiClient } from '@/services/api/client'
-import type { ApiResult, PaginatedResult } from '@/types/api'
-import type { Cliente } from '../types/cliente'
+import type { ApiResult } from '@/types/api'
+import type { Cliente, ClienteCreateInput } from '../types/cliente'
 
 /**
- * Camada de serviço do módulo Clientes: isola os componentes/views de detalhes
- * de HTTP. Os endpoints ainda não existem no backend — assim que existirem,
- * nenhuma view precisa mudar, só esta função.
+ * Camada de serviço do módulo Clientes: isola as views de detalhes de HTTP.
+ * Espelha exatamente o contrato de ERP.SaaS.Api.Controllers.ClientesController.
  */
 export const clientesService = {
-  async listar(): Promise<ApiResult<PaginatedResult<Cliente>>> {
-    const response = await apiClient.get<ApiResult<PaginatedResult<Cliente>>>('/clientes')
+  async listar(): Promise<ApiResult<Cliente[]>> {
+    const response = await apiClient.get<ApiResult<Cliente[]>>('/clientes')
     return response.data
   },
 
@@ -18,7 +17,7 @@ export const clientesService = {
     return response.data
   },
 
-  async criar(cliente: Omit<Cliente, 'id'>): Promise<ApiResult<Cliente>> {
+  async criar(cliente: ClienteCreateInput): Promise<ApiResult<Cliente>> {
     const response = await apiClient.post<ApiResult<Cliente>>('/clientes', cliente)
     return response.data
   },

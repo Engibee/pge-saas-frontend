@@ -1,20 +1,21 @@
-/** Espelha ERP.SaaS.Core.Entities.Cliente. */
+/** Espelha ERP.SaaS.Api.Dtos.ClienteResponseDto (backend). */
 export interface Cliente {
   id: string
   nome: string
   cpfCnpj?: string
   email?: string
   telefoneWhatsApp?: string
-  aceitaContatoWhatsApp: boolean
   observacoes?: string
-  origem: OrigemCliente
+  /** Serializado como string pelo backend (ex.: "Manual", "WhatsApp"). */
+  origem: string
+  createdAtUtc: string
 }
 
-/** Espelha ERP.SaaS.Core.Entities.OrigemCliente. */
-export enum OrigemCliente {
-  Manual = 0,
-  WhatsApp = 1,
-  Site = 2,
-  Indicacao = 3,
-  Importacao = 4,
+/** Espelha ERP.SaaS.Api.Dtos.ClienteCreateRequestDto (backend). */
+export interface ClienteCreateInput {
+  nome: string
+  cpfCnpj?: string
+  email?: string
+  telefoneWhatsApp?: string
+  observacoes?: string
 }
