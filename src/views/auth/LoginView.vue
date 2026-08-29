@@ -93,9 +93,11 @@ const onSubmit = handleSubmit(async (values) => {
         </button>
       </form>
 
-      <p class="mt-6 text-center text-xs text-slate-400">
-        Backend de autenticação ainda em desenvolvimento — este formulário já está
-        pronto para consumir <code>POST /api/auth/login</code> assim que existir.
+      <p class="mt-6 text-center text-sm text-slate-500">
+        Ainda não tem uma conta?
+        <RouterLink :to="{ name: 'register' }" class="font-medium text-brand-600 hover:text-brand-700">
+          Criar conta
+        </RouterLink>
       </p>
     </div>
   </div>

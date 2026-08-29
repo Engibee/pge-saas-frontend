@@ -10,16 +10,21 @@ interface LoginResponse {
   usuario: UsuarioAutenticado
 }
 
+export interface RegisterPayload {
+  razaoSocial: string
+  nomeFantasia?: string
+  nomeCompleto: string
+  email: string
+  senha: string
+  /** Valor numérico do enum TenantPlano (0 = Free, 1 = Standard, 2 = Empresarial). */
+  plano: number
+}
+
 const STORAGE_KEY = 'erp-saas:auth'
 
 /**
- * Store de autenticação.
- *
- * IMPORTANTE: enquanto o backend não implementa o JWT de verdade (ver README
- * do projeto — está marcado como TODO(auth-jwt) no lado C#), o método login()
- * abaixo já está pronto para consumir o endpoint real (`POST /api/auth/login`)
- * assim que ele existir. Não há necessidade de alterar nada aqui quando o
- * backend evoluir — só o endpoint precisa passar a responder de verdade.
+ * Store de autenticação — login, cadastro de conta e persistência de sessão
+ * (JWT access token + refresh token) em localStorage.
  */
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
@@ -85,6 +90,32 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /**
+   * Cria a conta (Tenant + usuário administrador) via POST /api/auth/register.
+   * Em caso de sucesso, o backend já devolve uma sessão autenticada — por
+   * isso, assim como em login(), já guardamos os tokens aqui: cadastro
+   * implica login automático, sem precisar de uma segunda chamada.
+   */
+  async function register(payload: RegisterPayload): Promise<ApiResult<void>> {
+    try {
+      const response = await apiClient.post<ApiResult<LoginResponse>>('/auth/register', payload)
+
+      if (!response.data.succeeded || !response.data.value) {
+        return { succeeded: false, errors: response.data.errors }
+      }
+
+      const { accessToken: token, refreshToken: refresh, usuario: user } = response.data.value
+      accessToken.value = token
+      refreshToken.value = refresh
+      usuario.value = user
+      persistToStorage()
+
+      return { succeeded: true, errors: [] }
+    } catch {
+      return { succeeded: false, errors: ['Não foi possível conectar ao servidor. Tente novamente.'] }
+    }
+  }
+
   function logout() {
     accessToken.value = null
     refreshToken.value = null
@@ -101,6 +132,7 @@ export const useAuthStore = defineStore('auth', () => {
     usuario,
     isAuthenticated,
     login,
+    register,
     logout,
   }
 })

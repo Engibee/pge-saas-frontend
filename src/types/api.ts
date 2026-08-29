@@ -18,12 +18,29 @@ export enum ModuleType {
   OficinaMecanica = 2,
 }
 
-/** Espelha ERP.SaaS.Core.Entities.PapelUsuario */
+/**
+ * Espelha ERP.SaaS.Core.Entities.PapelUsuario. Mantido como referência dos
+ * valores possíveis, mas o campo `papel` em UsuarioAutenticado é tipado como
+ * `string` porque o backend serializa o enum pelo nome (ex.: "Vendedor"),
+ * não pelo número.
+ */
 export enum PapelUsuario {
-  Operador = 0,
+  AdministradorTenant = 0,
   Gerente = 1,
-  AdministradorTenant = 2,
+  Vendedor = 2,
+  AtendenteWhatsApp = 3,
+  Estoque = 4,
+  Instalador = 5,
+  Financeiro = 6,
+  Analista = 7,
   SuperAdmin = 99,
+}
+
+/** Espelha ERP.SaaS.Core.Entities.TenantPlano — planos de assinatura do SaaS. */
+export enum TenantPlano {
+  Free = 0,
+  Standard = 1,
+  Empresarial = 2,
 }
 
 /** Usuário autenticado — populado a partir do JWT decodificado (ver stores/auth.ts). */
@@ -34,6 +51,8 @@ export interface UsuarioAutenticado {
   email: string
   /** O backend serializa o enum PapelUsuario como string (ex.: "AdministradorTenant"), não como número. */
   papel: string
+  /** O backend serializa o enum TenantPlano como string (ex.: "Standard"), não como número. */
+  plano: string
 }
 
 /** Paginação padrão usada em listagens da API (a definir formato exato junto ao backend). */
