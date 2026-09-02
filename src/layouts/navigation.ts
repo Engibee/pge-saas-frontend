@@ -1,4 +1,4 @@
-import { Home, Users, MessageCircle, Sofa, Settings } from '@lucide/vue'
+import { Home, Users, MessageCircle, Sofa, Settings, Briefcase, Phone } from '@lucide/vue'
 import type { Component } from 'vue'
 
 export interface NavItem {
@@ -25,6 +25,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: 'Início', routeName: 'dashboard', icon: Home },
       { label: 'Clientes', routeName: 'clientes-lista', icon: Users },
+      { label: 'Serviços', routeName: 'servicos-lista', icon: Briefcase },
       { label: 'Conversas WhatsApp', routeName: 'whatsapp-inbox', icon: MessageCircle },
     ],
   },
@@ -34,6 +35,9 @@ export const navGroups: NavGroup[] = [
   },
   {
     title: 'Sistema',
-    items: [{ label: 'Configurações', routeName: 'dashboard', icon: Settings }],
+    items: [
+      { label: 'WhatsApp (número conectado)', routeName: 'whatsapp-configuracao', icon: Phone },
+      { label: 'Configurações', routeName: 'dashboard', icon: Settings },
+    ],
   },
 ]

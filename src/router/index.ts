@@ -4,13 +4,14 @@ import { useAuthStore } from '@/stores/auth'
 import { furnitureRoutes } from '@/modules/furniture/routes'
 import { clientesRoutes } from '@/modules/clientes/routes'
 import { whatsappRoutes } from '@/modules/whatsapp/routes'
+import { servicosRoutes } from '@/modules/servicos/routes'
 
 /**
  * Composição das rotas de todos os módulos de negócio habilitados.
  * Para desabilitar um módulo no frontend, basta remover sua entrada aqui
  * (espelha o array `enabledModules` da composição raiz do backend em C#).
  */
-const moduleRoutes = [...clientesRoutes, ...whatsappRoutes, ...furnitureRoutes]
+const moduleRoutes = [...clientesRoutes, ...whatsappRoutes, ...servicosRoutes, ...furnitureRoutes]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,17 @@ const router = createRouter({
       name: 'register',
       component: () => import('@/views/auth/RegisterView.vue'),
       meta: { title: 'Criar conta', public: true },
+    },
+    {
+      // Página pública que o CLIENTE abre (ex.: a partir de um link do
+      // WhatsApp) para ver e assinar o orçamento — de propósito FORA do
+      // AppLayout (sem sidebar/menu de staff) e sem exigir login, espelhando
+      // o backend (GET/POST /api/orcamentos/{id}/... são [AllowAnonymous]).
+      path: '/orcamento/:id',
+      name: 'orcamento-publico',
+      component: () => import('@/modules/orcamentos/views/OrcamentoPublicoView.vue'),
+      meta: { title: 'Orçamento', public: true },
+      props: true,
     },
     {
       path: '/',
